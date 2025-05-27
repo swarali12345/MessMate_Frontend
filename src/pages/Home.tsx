@@ -29,7 +29,7 @@ const Home: React.FC = () => {
                   <div className="mt-3 sm:mt-0 sm:ml-3">
                     <Link
                       to="/auth/login"
-                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-primary-main bg-primary-light hover:bg-primary-main hover:text-white md:py-4 md:text-lg md:px-10"
+                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-main hover:bg-primary-dark md:py-4 md:text-lg md:px-10"
                     >
                       Login
                     </Link>
