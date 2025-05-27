@@ -1,0 +1,43 @@
+/* Container */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Grid */
+.grid {
+  @apply grid gap-4;
+}
+
+.grid-cols-2 {
+  @apply grid-cols-1 md:grid-cols-2;
+}
+
+.grid-cols-3 {
+  @apply grid-cols-1 md:grid-cols-3;
+}
+
+/* Flex */
+.flex {
+  @apply flex;
+}
+
+.flex-col {
+  @apply flex-col;
+}
+
+.items-center {
+  @apply items-center;
+}
+
+.justify-between {
+  @apply justify-between;
+}
+
+/* Spacing */
+.space-y-4 > * + * {
+  @apply mt-4;
+}
+
+.space-x-4 > * + * {
+  @apply ml-4;
+} 
