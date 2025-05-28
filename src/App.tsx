@@ -7,13 +7,15 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import NotFound from './pages/NotFound.tsx';
+import SplashScreen from './components/SplashScreen';
 import './index.css';
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
+        <Route path="/" element={<SplashScreen />} />
+        <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

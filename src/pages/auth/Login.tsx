@@ -15,11 +15,11 @@ const Login: React.FC = () => {
         <form className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-text-main mb-1" htmlFor="email">Email</label>
-            <input className="form-input bg-background-main border border-gray-300 focus:border-primary-main focus:ring-1 focus:ring-primary-main placeholder-gray-400 text-base py-3" type="email" id="email" name="email"required />
+            <input className="input" type="email" id="email" name="email" required />
           </div>
           <div>
             <label className="block text-sm font-medium text-text-main mb-1" htmlFor="password">Password</label>
-            <input className="form-input bg-background-main border border-gray-300 focus:border-primary-main focus:ring-1 focus:ring-primary-main placeholder-gray-400 text-base py-3" type="password" id="password" name="password" required />
+            <input className="input" type="password" id="password" name="password" required />
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
