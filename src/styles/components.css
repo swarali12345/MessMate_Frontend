@@ -7,6 +7,7 @@
   @apply bg-primary-main text-white hover:bg-primary-dark;
 }
 
+
 .btn-secondary {
   @apply bg-secondary-main text-white hover:bg-secondary-dark;
 }
