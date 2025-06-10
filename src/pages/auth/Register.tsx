@@ -1,7 +1,41 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+// const BACKEND_URI = import.meta.env.BACKEND_URI || "http://localhost:5041";
+const BACKEND_URI = import.meta.env.BACKEND_URI || "https://messmate-backend.onrender.com";
+const BACKEND_API_VERSION = import.meta.env.BACKEND_API_VERSION || "/api/v1";
+
 
 const Register: React.FC = () => {
+  
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  async function handleRegister(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      const response = await fetch(`${BACKEND_URI}${BACKEND_API_VERSION}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        navigate("/auth/login");
+      } else {
+        alert(data.message || "Register failed");
+      }
+
+    } catch (error) {
+      console.error("Register error:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-main/10 via-accent-main/40 to-background-main px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
@@ -22,6 +56,8 @@ const Register: React.FC = () => {
               name="name" 
               placeholder="Enter your full name"
               required 
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div>
@@ -33,6 +69,8 @@ const Register: React.FC = () => {
               name="email" 
               placeholder="Enter your email"
               required 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>
@@ -44,9 +82,11 @@ const Register: React.FC = () => {
               name="password" 
               placeholder="Create a password"
               required 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="w-full py-3 px-4 bg-primary-main text-white text-lg font-semibold rounded-lg shadow hover:bg-primary-main/90 focus:outline-none focus:ring-2 focus:ring-primary-main focus:ring-offset-2 transition-none">
+          <button type="submit" className="w-full py-3 px-4 bg-primary-main text-white text-lg font-semibold rounded-lg shadow hover:bg-primary-main/90 focus:outline-none focus:ring-2 focus:ring-primary-main focus:ring-offset-2 transition-none" onClick={handleRegister}>
             Register
           </button>
         </form>

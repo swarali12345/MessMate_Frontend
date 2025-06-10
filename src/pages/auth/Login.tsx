@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const BACKEND_URI = import.meta.env.BACKEND_URI || "http://localhost:5041";
+// const BACKEND_URI = import.meta.env.BACKEND_URI || "http://localhost:5041";
+const BACKEND_URI = import.meta.env.BACKEND_URI || "https://messmate-backend.onrender.com";
 const BACKEND_API_VERSION = import.meta.env.BACKEND_API_VERSION || "/api/v1";
 
 const Login: React.FC = () => {

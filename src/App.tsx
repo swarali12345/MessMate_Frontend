@@ -8,6 +8,7 @@ import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import NotFound from "./pages/NotFound.tsx";
 import SplashScreen from './components/SplashScreen';
+import MenuCustomization from './pages/menu/MenuCustomization';
 import "./index.css";
 
 const App: React.FC = () => {
@@ -20,6 +21,12 @@ const App: React.FC = () => {
         <Route path="/home" element={
             <MainLayout>
               <Home />
+            </MainLayout>
+          }
+        />
+        <Route path="/menu/customize" element={
+            <MainLayout>
+              <MenuCustomization />
             </MainLayout>
           }
         />
