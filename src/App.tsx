@@ -24,7 +24,7 @@ const App: React.FC = () => {
             </MainLayout>
           }
         />
-        <Route path="/menu/customize" element={
+        <Route path="/menucustomize/" element={
             <MainLayout>
               <MenuCustomization />
             </MainLayout>

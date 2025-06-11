@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { dummyMenuData, MainCategory, SubCategory, MenuItem, AddOn } from '../../data/dummyProducts';
+import { dummyMenuData, MainCategory, MenuItem, AddOn } from '../../data/dummyProducts';
 import InlineEdit from '../../components/InlineEdit';
 
 const MenuCustomization: React.FC = () => {
@@ -15,25 +15,8 @@ const MenuCustomization: React.FC = () => {
     );
   };
 
-  const handleSubCategoryEdit = (mainCategoryId: string, subCategoryId: string, field: string, value: string) => {
-    setMenuData(prevData =>
-      prevData.map(mainCat => {
-        if (mainCat.id === mainCategoryId) {
-          return {
-            ...mainCat,
-            subCategories: mainCat.subCategories.map(subCat =>
-              subCat.id === subCategoryId ? { ...subCat, [field]: value } : subCat
-            ),
-          };
-        }
-        return mainCat;
-      })
-    );
-  };
-
   const handleMenuItemEdit = (
     mainCategoryId: string,
-    subCategoryId: string,
     itemId: string,
     field: string,
     value: string | number
@@ -43,17 +26,9 @@ const MenuCustomization: React.FC = () => {
         if (mainCat.id === mainCategoryId) {
           return {
             ...mainCat,
-            subCategories: mainCat.subCategories.map(subCat => {
-              if (subCat.id === subCategoryId) {
-                return {
-                  ...subCat,
-                  items: subCat.items.map(item =>
-                    item.id === itemId ? { ...item, [field]: value } : item
-                  ),
-                };
-              }
-              return subCat;
-            }),
+            items: mainCat.items.map(item =>
+              item.id === itemId ? { ...item, [field]: value } : item
+            ),
           };
         }
         return mainCat;
@@ -63,7 +38,6 @@ const MenuCustomization: React.FC = () => {
 
   const handleAddOnEdit = (
     mainCategoryId: string,
-    subCategoryId: string,
     itemId: string,
     addOnId: string,
     field: string,
@@ -74,24 +48,16 @@ const MenuCustomization: React.FC = () => {
         if (mainCat.id === mainCategoryId) {
           return {
             ...mainCat,
-            subCategories: mainCat.subCategories.map(subCat => {
-              if (subCat.id === subCategoryId) {
+            items: mainCat.items.map(item => {
+              if (item.id === itemId) {
                 return {
-                  ...subCat,
-                  items: subCat.items.map(item => {
-                    if (item.id === itemId) {
-                      return {
-                        ...item,
-                        addOns: item.addOns.map(addOn =>
-                          addOn.id === addOnId ? { ...addOn, [field]: value } : addOn
-                        ),
-                      };
-                    }
-                    return item;
-                  }),
+                  ...item,
+                  addOns: item.addOns.map(addOn =>
+                    addOn.id === addOnId ? { ...addOn, [field]: value } : addOn
+                  ),
                 };
               }
-              return subCat;
+              return item;
             }),
           };
         }
@@ -100,23 +66,15 @@ const MenuCustomization: React.FC = () => {
     );
   };
 
-  const toggleItemAvailability = (mainCategoryId: string, subCategoryId: string, itemId: string) => {
+  const toggleItemAvailability = (mainCategoryId: string, itemId: string) => {
     setMenuData(prevData =>
       prevData.map(mainCat => {
         if (mainCat.id === mainCategoryId) {
           return {
             ...mainCat,
-            subCategories: mainCat.subCategories.map(subCat => {
-              if (subCat.id === subCategoryId) {
-                return {
-                  ...subCat,
-                  items: subCat.items.map(item =>
-                    item.id === itemId ? { ...item, isAvailable: !item.isAvailable } : item
-                  ),
-                };
-              }
-              return subCat;
-            }),
+            items: mainCat.items.map(item =>
+              item.id === itemId ? { ...item, isAvailable: !item.isAvailable } : item
+            ),
           };
         }
         return mainCat;
@@ -126,7 +84,6 @@ const MenuCustomization: React.FC = () => {
 
   const toggleAddOnAvailability = (
     mainCategoryId: string,
-    subCategoryId: string,
     itemId: string,
     addOnId: string
   ) => {
@@ -135,24 +92,16 @@ const MenuCustomization: React.FC = () => {
         if (mainCat.id === mainCategoryId) {
           return {
             ...mainCat,
-            subCategories: mainCat.subCategories.map(subCat => {
-              if (subCat.id === subCategoryId) {
+            items: mainCat.items.map(item => {
+              if (item.id === itemId) {
                 return {
-                  ...subCat,
-                  items: subCat.items.map(item => {
-                    if (item.id === itemId) {
-                      return {
-                        ...item,
-                        addOns: item.addOns.map(addOn =>
-                          addOn.id === addOnId ? { ...addOn, isAvailable: !addOn.isAvailable } : addOn
-                        ),
-                      };
-                    }
-                    return item;
-                  }),
+                  ...item,
+                  addOns: item.addOns.map(addOn =>
+                    addOn.id === addOnId ? { ...addOn, isAvailable: !addOn.isAvailable } : addOn
+                  ),
                 };
               }
-              return subCat;
+              return item;
             }),
           };
         }
@@ -167,45 +116,101 @@ const MenuCustomization: React.FC = () => {
       name: 'New Category',
       description: 'Add description here',
       imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80',
-      subCategories: []
+      items: []
     };
     setMenuData(prevData => [...prevData, newCategory]);
   };
 
-  const handleAddSubCategory = (mainCategoryId: string) => {
-    const newSubCategory: SubCategory = {
-      id: `subcat-${Date.now()}`,
-      name: 'New Sub-Category',
+  const handleAddMenuItem = (mainCategoryId: string) => {
+    const newItem: MenuItem = {
+      id: `item-${Date.now()}`,
+      name: 'New Item',
       description: 'Add description here',
-      items: []
+      price: 0,
+      imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80',
+      isAvailable: true,
+      addOns: []
     };
 
     setMenuData(prevData =>
       prevData.map(cat =>
         cat.id === mainCategoryId
-          ? { ...cat, subCategories: [...cat.subCategories, newSubCategory] }
+          ? { ...cat, items: [...cat.items, newItem] }
           : cat
       )
     );
   };
 
+  const handleAddTopping = (mainCategoryId: string, itemId: string) => {
+    const newTopping: AddOn = {
+      id: `topping-${Date.now()}`,
+      name: 'New Topping',
+      price: 0,
+      isAvailable: true
+    };
+
+    setMenuData(prevData =>
+      prevData.map(mainCat => {
+        if (mainCat.id === mainCategoryId) {
+          return {
+            ...mainCat,
+            items: mainCat.items.map(item => {
+              if (item.id === itemId) {
+                return {
+                  ...item,
+                  addOns: [...item.addOns, newTopping]
+                };
+              }
+              return item;
+            })
+          };
+        }
+        return mainCat;
+      })
+    );
+  };
+
   const handleDeleteCategory = (categoryId: string) => {
-    if (window.confirm('Are you sure you want to delete this category? This will also delete all subcategories and items.')) {
+    if (window.confirm('Are you sure you want to delete this category? This will also delete all items.')) {
       setMenuData(prevData => prevData.filter(cat => cat.id !== categoryId));
     }
   };
 
-  const handleDeleteSubCategory = (mainCategoryId: string, subCategoryId: string) => {
-    if (window.confirm('Are you sure you want to delete this sub-category? This will also delete all items.')) {
+  const handleDeleteMenuItem = (mainCategoryId: string, itemId: string) => {
+    if (window.confirm('Are you sure you want to delete this item?')) {
       setMenuData(prevData =>
         prevData.map(cat =>
           cat.id === mainCategoryId
             ? {
                 ...cat,
-                subCategories: cat.subCategories.filter(subCat => subCat.id !== subCategoryId)
+                items: cat.items.filter(item => item.id !== itemId)
               }
             : cat
         )
+      );
+    }
+  };
+
+  const handleDeleteTopping = (mainCategoryId: string, itemId: string, toppingId: string) => {
+    if (window.confirm('Are you sure you want to delete this topping?')) {
+      setMenuData(prevData =>
+        prevData.map(mainCat => {
+          if (mainCat.id === mainCategoryId) {
+            return {
+              ...mainCat,
+              items: mainCat.items.map(item => {
+                if (item.id === itemId) {
+                  return {
+                    ...item,
+                    addOns: item.addOns.filter(topping => topping.id !== toppingId)
+                  };
+                }
+                return item;
+              })
+            };
+          }
+          return mainCat;
+        })
       );
     }
   };
@@ -287,114 +292,131 @@ const MenuCustomization: React.FC = () => {
                 
                 <div className="mb-4">
                   <button
-                    onClick={() => handleAddSubCategory(mainCategory.id)}
+                    onClick={() => handleAddMenuItem(mainCategory.id)}
                     className="flex items-center gap-2 px-3 py-1.5 text-sm bg-primary-main/10 text-primary-main rounded-lg hover:bg-primary-main/20 transition-colors"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                     </svg>
-                    Add Sub-Category
+                    Add Menu Item
                   </button>
                 </div>
 
-                {mainCategory.subCategories.map(subCategory => (
-                  <div key={subCategory.id} className="mb-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex-grow">
-                        <InlineEdit
-                          value={subCategory.name}
-                          onSave={(value) => handleSubCategoryEdit(mainCategory.id, subCategory.id, 'name', value as string)}
-                          className="text-lg font-medium text-primary-main"
-                        />
-                        <InlineEdit
-                          value={subCategory.description}
-                          onSave={(value) => handleSubCategoryEdit(mainCategory.id, subCategory.id, 'description', value as string)}
-                          className="text-sm text-gray-500 block mt-1"
-                        />
+                <div className="space-y-4">
+                  {mainCategory.items.map(item => (
+                    <div key={item.id} className="border rounded-lg p-3">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <InlineEdit
+                            value={item.name}
+                            onSave={(value) => handleMenuItemEdit(mainCategory.id, item.id, 'name', value as string)}
+                            className="font-medium"
+                          />
+                          <InlineEdit
+                            value={item.description}
+                            onSave={(value) => handleMenuItemEdit(mainCategory.id, item.id, 'description', value as string)}
+                            className="text-sm text-gray-600 block mt-1"
+                          />
+                          <InlineEdit
+                            value={item.price}
+                            type="number"
+                            onSave={(value) => handleMenuItemEdit(mainCategory.id, item.id, 'price', value as number)}
+                            className="text-primary-main font-medium mt-1"
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => toggleItemAvailability(mainCategory.id, item.id)}
+                            className={`px-3 py-1 rounded-full text-sm font-medium ${
+                              item.isAvailable
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-red-100 text-red-800'
+                            }`}
+                          >
+                            {item.isAvailable ? 'Available' : 'Unavailable'}
+                          </button>
+                          <button
+                            onClick={() => handleDeleteMenuItem(mainCategory.id, item.id)}
+                            className="text-red-600 hover:text-red-800"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
-                      <button
-                        onClick={() => handleDeleteSubCategory(mainCategory.id, subCategory.id)}
-                        className="ml-2 text-red-600 hover:text-red-800"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                      </button>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      {subCategory.items.map(item => (
-                        <div key={item.id} className="border rounded-lg p-3">
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <InlineEdit
-                                value={item.name}
-                                onSave={(value) => handleMenuItemEdit(mainCategory.id, subCategory.id, item.id, 'name', value as string)}
-                                className="font-medium"
-                              />
-                              <InlineEdit
-                                value={item.description}
-                                onSave={(value) => handleMenuItemEdit(mainCategory.id, subCategory.id, item.id, 'description', value as string)}
-                                className="text-sm text-gray-600 block mt-1"
-                              />
-                              <InlineEdit
-                                value={item.price}
-                                type="number"
-                                onSave={(value) => handleMenuItemEdit(mainCategory.id, subCategory.id, item.id, 'price', value as number)}
-                                className="text-primary-main font-medium mt-1"
-                              />
-                            </div>
+                      
+                      {item.addOns.length > 0 && (
+                        <div className="mt-2">
+                          <div className="flex justify-between items-center mb-2">
+                            <h5 className="text-sm font-medium text-gray-700">Toppings:</h5>
                             <button
-                              onClick={() => toggleItemAvailability(mainCategory.id, subCategory.id, item.id)}
-                              className={`px-3 py-1 rounded-full text-sm font-medium ${
-                                item.isAvailable
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-red-100 text-red-800'
-                              }`}
+                              onClick={() => handleAddTopping(mainCategory.id, item.id)}
+                              className="flex items-center gap-1 px-2 py-1 text-xs bg-primary-main/10 text-primary-main rounded-lg hover:bg-primary-main/20 transition-colors"
                             >
-                              {item.isAvailable ? 'Available' : 'Unavailable'}
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                              </svg>
+                              Add Topping
                             </button>
                           </div>
-                          
-                          {item.addOns.length > 0 && (
-                            <div className="mt-2">
-                              <h5 className="text-sm font-medium text-gray-700 mb-2">Add-ons:</h5>
-                              <div className="space-y-2">
-                                {item.addOns.map(addOn => (
-                                  <div key={addOn.id} className="flex justify-between items-center">
-                                    <div>
-                                      <InlineEdit
-                                        value={addOn.name}
-                                        onSave={(value) => handleAddOnEdit(mainCategory.id, subCategory.id, item.id, addOn.id, 'name', value as string)}
-                                        className="text-sm"
-                                      />
-                                      <InlineEdit
-                                        value={addOn.price}
-                                        type="number"
-                                        onSave={(value) => handleAddOnEdit(mainCategory.id, subCategory.id, item.id, addOn.id, 'price', value as number)}
-                                        className="text-sm text-primary-main ml-2"
-                                      />
-                                    </div>
-                                    <button
-                                      onClick={() => toggleAddOnAvailability(mainCategory.id, subCategory.id, item.id, addOn.id)}
-                                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                        addOn.isAvailable
-                                          ? 'bg-green-100 text-green-800'
-                                          : 'bg-red-100 text-red-800'
-                                      }`}
-                                    >
-                                      {addOn.isAvailable ? 'Available' : 'Unavailable'}
-                                    </button>
-                                  </div>
-                                ))}
+                          <div className="space-y-2">
+                            {item.addOns.map(addOn => (
+                              <div key={addOn.id} className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
+                                <div className="flex-grow">
+                                  <InlineEdit
+                                    value={addOn.name}
+                                    onSave={(value) => handleAddOnEdit(mainCategory.id, item.id, addOn.id, 'name', value as string)}
+                                    className="text-sm font-medium"
+                                  />
+                                  <InlineEdit
+                                    value={addOn.price}
+                                    type="number"
+                                    onSave={(value) => handleAddOnEdit(mainCategory.id, item.id, addOn.id, 'price', value as number)}
+                                    className="text-sm text-primary-main ml-2"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => toggleAddOnAvailability(mainCategory.id, item.id, addOn.id)}
+                                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                      addOn.isAvailable
+                                        ? 'bg-green-100 text-green-800'
+                                        : 'bg-red-100 text-red-800'
+                                    }`}
+                                  >
+                                    {addOn.isAvailable ? 'Available' : 'Unavailable'}
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteTopping(mainCategory.id, item.id, addOn.id)}
+                                    className="text-red-600 hover:text-red-800"
+                                  >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            ))}
+                          </div>
                         </div>
-                      ))}
+                      )}
+                      {item.addOns.length === 0 && (
+                        <div className="mt-2">
+                          <button
+                            onClick={() => handleAddTopping(mainCategory.id, item.id)}
+                            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-primary-main/10 text-primary-main rounded-lg hover:bg-primary-main/20 transition-colors"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Topping
+                          </button>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           ))}

@@ -63,10 +63,11 @@ const Login: React.FC = () => {
               Email
             </label>
             <input
-              className="form-input bg-background-main border border-gray-300 focus:border-primary-main focus:ring-1 focus:ring-primary-main placeholder-gray-400 text-base py-3"
+               className="w-full px-4 py-3 bg-background-main border border-gray-300 rounded-lg focus:border-primary-main focus:ring-2 focus:ring-primary-main/20 focus:outline-none transition-colors text-base"
               type="email"
               id="email"
               name="email"
+              placeholder="Enter your email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -80,10 +81,10 @@ const Login: React.FC = () => {
               Password
             </label>
             <input
-              className="form-input bg-background-main border border-gray-300 focus:border-primary-main focus:ring-1 focus:ring-primary-main placeholder-gray-400 text-base py-3"
-              type="password"
+               className="w-full px-4 py-3 bg-background-main border border-gray-300 rounded-lg focus:border-primary-main focus:ring-2 focus:ring-primary-main/20 focus:outline-none transition-colors text-base"
               id="password"
               name="password"
+              placeholder="Enter your password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
